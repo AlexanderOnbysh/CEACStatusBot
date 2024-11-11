@@ -18,7 +18,8 @@ class TelegramNotificationHandle(NotificationHandle):
 
         # Construct the message text with the title in bold
         # message_text = f"<b>{message_title}</b>\n\n<pre>{message_content}</pre>"
-        message_text = f"<b>{message_title}</b>"
+        prefix = "✅ " if "Administrative Processing" not in message_title else "🔄"
+        message_text = f"{prefix} <b>{message_title}</b>"
 
         # Send the message using the Telegram Bot API
         response = requests.post(self.__api_url, data={
