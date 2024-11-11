@@ -17,7 +17,8 @@ class TelegramNotificationHandle(NotificationHandle):
         message_content = html.escape(json.dumps(result, indent=2))
 
         # Construct the message text with the title in bold
-        message_text = f"<b>{message_title}</b>\n\n<pre>{message_content}</pre>"
+        # message_text = f"<b>{message_title}</b>\n\n<pre>{message_content}</pre>"
+        message_text = f"<b>{message_title}</b>"
 
         # Send the message using the Telegram Bot API
         response = requests.post(self.__api_url, data={
