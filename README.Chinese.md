@@ -1,8 +1,8 @@
 # CEACStatusBot🤖
 
+自动从[CEAC](https://ceac.state.gov/CEACStatTracker/Status.aspx?App=NIV)查询您的美国签证申请状态，并在状态更新时立即通知您！
 
-自动从[CEAC](https://ceac.state.gov/CEACStatTracker/Status.aspx?App=NIV)查询您的美国签证申请状态，并立即通知您!
-
+感谢 [Andision](https://github.com/Andision)的 [CEACStatusBot](https://github.com/Andision/CEACStatusBot), 这个分支更新了当前的依赖并重构了代码，以便在状态发生变化时通知用户。
 
 ## 使用
 
@@ -13,14 +13,7 @@
 ###  环境变量
 
 
-- LOCATION: 您申请签证的使领馆的地点代码。要查找使领馆对应的代码，请参考[此表](LOCATION.md)。中国内地的部分使领馆代码如下表：
-    | 代码 | 位置                      |
-    |------|-------------------------------|
-    |BEJ|CHINA, BEIJING|
-    |CHE|CHINA, CHENGDU|
-    |GUZ|CHINA, GUANGZHOU|
-    |SHG|CHINA, SHANGHAI|
-    |SNY|CHINA, SHENYANG|
+- LOCATION: 您申请签证的使领馆的地点。要查找使领馆对应的名称，请参考[此表](LOCATION.md)。请直接使用使馆位置名，如`CHINA, BEIJING`。
 
 
 - NUMBER: 您在CEAC网站中的Application ID or Case Number(例如`AA0020AKAX` 或 `2012118 345 0001`)。具体信息请查看[CEAC](https://ceac.state.gov/CEACStatTracker/Status.aspx?App=NIV)网站的说明。**注意**: 请先在[CEAC](https://ceac.state.gov/CEACStatTracker/Status.aspx?App=NIV)网站确认你能够正确获取你的签证状态。这一项目的目的是简化从[CEAC](https://ceac.state.gov/CEACStatTracker/Status.aspx?App=NIV)网站获取签证信息的过程，并不能比人工方式获得更多的信息。
@@ -29,7 +22,11 @@
 
 - SURNAME: 姓的前5个英文字母
 
-- TIMEZONE: 可选，设置自己的时区，以免打扰睡眠。例如: `Asia/Shanghai` 或 `America/New_York`。如果你设置了时区，程序默认不会在你的时区的晚上10点到第二天早上8点发送。**注意**: 这里使用的是IANA时区数据库的时区表示法，并不是简单的地理位置的组合。例如，如果你希望使用北京时间，你的时区应该是`Asia/Shanghai`而**不是** ~~`Asia/Beijing`~~
+- TIMEZONE: 可选，设置你所在的时区，以避免在睡眠时间收到打扰。例如: `Asia/Shanghai` 或 `America/New_York`。**注意**: 这里使用的是IANA时区数据库的时区表示法，并不是简单的地理位置的组合。例如，如果你希望使用北京时间，你的时区应该是`Asia/Shanghai`而**不是** ~~`Asia/Beijing`~~
+
+- ACTIVE_HOURS: 可选，设置接收通知的活跃时间段，以避免在睡眠时间收到打扰。使用24小时格式。例如: `08:00-22:00`
+
+- GH_TOKEN: 要访问之前的状态，您需要设置一个具有`repo`权限的Github令牌。您可以在Github -> 设置 -> 开发者设置 -> 个人访问令牌中创建一个新的令牌。
 
 #### 邮件通知
 
@@ -67,12 +64,23 @@ Telegram Bot [创建教程](https://www.cytron.io/tutorial/how-to-create-a-teleg
 
 3. 查看 `Github Actions` 中的 `workflows` 是否正常运行并检查邮箱是否收到邮件。
 
+### 本地使用
+
+对于本地使用，可以在项目根目录创建一个 `.env` 文件来存储你的环境变量 (例如 `LOCATION=...`, `NUMBER=...`)，脚本会自动加载它们。或者拷贝模版文件 `.env.example` 并重命名为 `.env`来使用。
+然后使用 uv 构建环境：
+
+```bash
+pip install uv # 如果你没有安装 uv
+uv sync
+uv run trigger.py
+```
+
 
 ## 待办事项
 
 - [x] 向多个邮箱发送邮件。
 
-- [ ] 增加更多第三方通知服务。
+- [x] 增加更多第三方通知服务。
 
 - [ ] 更人性化的界面。
 
